@@ -10,6 +10,19 @@ import {
   theme,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
+import { createClient, Provider } from "urql";
+
+const GITHUB_TOKEN = "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";
+
+const client = createClient({
+  url: "https://api.github.com/graphql",
+  fetchOptions: {
+    headers: {
+      Authorization: `bearer ${GITHUB_TOKEN}`,
+      Accept: "application/vnd.github.packages-preview+json",
+    },
+  },
+});
 
 export const App = () => (
   <ChakraProvider theme={theme}>
