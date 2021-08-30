@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { createClient, Provider } from "urql";
+import QueryWrapper from "./QueryWrapper";
 
 const GITHUB_TOKEN = "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";
 
@@ -25,11 +26,14 @@ const client = createClient({
 });
 
 export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-      </Grid>
-    </Box>
-  </ChakraProvider>
+  <Provider value={client}>
+    <ChakraProvider theme={theme}>
+      <Box textAlign="center" fontSize="xl">
+        <Grid minH="100vh" p={3}>
+          <ColorModeSwitcher justifySelf="flex-end" />
+          <QueryWrapper />
+        </Grid>
+      </Box>
+    </ChakraProvider>
+  </Provider>
 );
