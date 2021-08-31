@@ -28,7 +28,7 @@ const client = createClient({
 export const App = () => (
   <Provider value={client}>
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
+      <Box textAlign="center" fontSize="xl" maxWidth="800px" margin="auto">
         <Grid minH="100vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />
           <QueryWrapper />
