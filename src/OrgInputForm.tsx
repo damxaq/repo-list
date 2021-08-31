@@ -20,18 +20,12 @@ export default function OrgInputForm(props: FuncProps) {
       {({ values, handleChange, isSubmitting }) => (
         <Form>
           <FormControl>
-            <FormLabel
-              htmlFor="organizationName"
-              data-testid="organizationNameLabel"
-            >
-              Organization Name
-            </FormLabel>
+            <FormLabel htmlFor="organizationName">Organization Name</FormLabel>
             <Input
               value={values.organizationName}
               onChange={handleChange}
               id="organizationName"
               placeholder="organizationName"
-              data-testid="input"
             />
           </FormControl>
           <Button
@@ -39,7 +33,6 @@ export default function OrgInputForm(props: FuncProps) {
             background="teal"
             m={4}
             isLoading={isSubmitting}
-            data-testid="searchButton"
           >
             Search
           </Button>

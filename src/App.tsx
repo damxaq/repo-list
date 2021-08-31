@@ -1,14 +1,5 @@
 import * as React from "react";
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react";
+import { ChakraProvider, Box, Grid, extendTheme } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { createClient, Provider } from "urql";
 import QueryWrapper from "./QueryWrapper";
@@ -22,6 +13,13 @@ const client = createClient({
       Authorization: `bearer ${GITHUB_TOKEN}`,
       Accept: "application/vnd.github.packages-preview+json",
     },
+  },
+});
+
+const theme = extendTheme({
+  config: {
+    useSystemColorMode: true,
+    initialColorMode: "dark",
   },
 });
 
