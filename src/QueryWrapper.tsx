@@ -9,6 +9,8 @@ const OFFSET = 5;
 
 export default function QueryWrapper() {
   const [organizationName, setOrganizationName] = useState("");
+  const [organizationDescription, setOrganizationDescription] = useState("");
+
   const [repoData, setRepoData] = useState([]);
   const [first, setFirst] = useState(REPOS_LIMIT);
   const [repoCount, setRepoCount] = useState(0);
@@ -35,6 +37,7 @@ export default function QueryWrapper() {
   useEffect(() => {
     if (result && result.fetching === false) {
       if (result.data?.organization) {
+        setOrganizationDescription(result.data.organization.name);
         const repositoryData = result.data.organization.repositories;
         if (showInputError) setShowInputError(false);
         setRepoCount(repositoryData.totalCount);
@@ -63,7 +66,11 @@ export default function QueryWrapper() {
       <OrgInputForm setOrganizationName={setOrganizationName} />
       {repoData?.length > 0 && (
         <>
-          <ReposTable tableData={repoData} />
+          <ReposTable
+            tableData={repoData}
+            organizationName={organizationName}
+            organizationDescription={organizationDescription}
+          />
           {first < repoCount && (
             <Button onClick={handleMore} isActive={false}>
               More

@@ -1,6 +1,15 @@
 import React from "react";
 
-import { Table, Thead, Tbody, Tr, Th, Td, chakra } from "@chakra-ui/react";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  chakra,
+  TableCaption,
+} from "@chakra-ui/react";
 
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { useTable, useSortBy, Column } from "react-table";
@@ -13,6 +22,8 @@ interface Repository {
 
 interface FuncProps {
   tableData: Array<Repository>;
+  organizationName: string;
+  organizationDescription: string;
 }
 
 const ReposTable = (props: FuncProps) => {
@@ -39,9 +50,14 @@ const ReposTable = (props: FuncProps) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: props.tableData }, useSortBy);
 
+  const urlCreator = (cell: string) => {
+    return `https://github.com/${props.organizationName}/${cell}`;
+  };
+
   return (
     <>
       <Table {...getTableProps()}>
+        <TableCaption>{props.organizationDescription}</TableCaption>
         <Thead>
           {headerGroups.map((headerGroup, index) => (
             <Tr
@@ -72,7 +88,15 @@ const ReposTable = (props: FuncProps) => {
             return (
               <Tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
-                  <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
+                  <Td {...cell.getCellProps()}>
+                    {cell.column.id === "name" ? (
+                      <a href={urlCreator(cell.value)} target="_blank">
+                        {cell.render("Cell")}
+                      </a>
+                    ) : (
+                      cell.render("Cell")
+                    )}
+                  </Td>
                 ))}
               </Tr>
             );
