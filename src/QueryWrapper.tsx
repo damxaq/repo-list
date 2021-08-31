@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "urql";
+import ReposTable from "./ReposTable";
 
 const FIRST = 5;
 const ORGANIZATION_NAME = "reactjs";
@@ -32,5 +33,9 @@ export default function QueryWrapper() {
     }
   }, [result]);
 
-  return <div>{repoData?.length > 0 && <>{JSON.stringify(repoData)}</>}</div>;
+  console.log(result);
+
+  return (
+    <div>{repoData?.length > 0 && <ReposTable tableData={repoData} />}</div>
+  );
 }

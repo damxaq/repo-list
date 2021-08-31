@@ -13,7 +13,7 @@ import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { createClient, Provider } from "urql";
 import QueryWrapper from "./QueryWrapper";
 
-const GITHUB_TOKEN = "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";
+const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 
 const client = createClient({
   url: "https://api.github.com/graphql",
