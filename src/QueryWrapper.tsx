@@ -54,6 +54,7 @@ export default function QueryWrapper() {
     }
   }, [result, organizationName]);
 
+  // Reseting query limit after searching again
   useEffect(() => {
     if (repoData.length) {
       setFirst(REPOS_LIMIT);

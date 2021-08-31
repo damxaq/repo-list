@@ -26,6 +26,7 @@ interface FuncProps {
   organizationDescription: string;
 }
 
+// Table Headers
 const ReposTable = (props: FuncProps) => {
   const columns: Array<
     Column<{ name: HTMLElement; forkCount: number; stargazerCount: number }>
@@ -47,9 +48,11 @@ const ReposTable = (props: FuncProps) => {
     []
   );
 
+  // Table Data
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: props.tableData }, useSortBy);
 
+  // Creating a link to a repo from the name of repository
   const urlCreator = (cell: string) => {
     return `https://github.com/${props.organizationName}/${cell}`;
   };

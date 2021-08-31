@@ -1,8 +1,10 @@
 import React from "react";
-import { screen, fireEvent } from "@testing-library/react";
+import { fireEvent } from "@testing-library/react";
 import { render } from "../test-utils";
 import { App } from "../App";
 import { act } from "react-dom/test-utils";
+
+// Can't do more tests right now because it is needed to install Apollo in order to mock GraphQl queries
 
 test("renders org name label", async () => {
   const { getByTestId } = render(<App />);

@@ -4,6 +4,7 @@ import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { createClient, Provider } from "urql";
 import QueryWrapper from "./QueryWrapper";
 
+// IMPORTANT: Github is revoking access token when it is committed, so here you need to paste the token in order to authorize
 const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 
 const client = createClient({
@@ -18,7 +19,7 @@ const client = createClient({
 
 const theme = extendTheme({
   config: {
-    useSystemColorMode: true,
+    useSystemColorMode: false,
     initialColorMode: "dark",
   },
 });
