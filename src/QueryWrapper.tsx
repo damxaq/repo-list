@@ -12,6 +12,7 @@ export default function QueryWrapper() {
   const [repoData, setRepoData] = useState([]);
   const [first, setFirst] = useState(REPOS_LIMIT);
   const [repoCount, setRepoCount] = useState(0);
+  const [showInputError, setShowInputError] = useState(false);
 
   const query = `
     query {
@@ -32,10 +33,16 @@ export default function QueryWrapper() {
   const [result, reexecuteQuery] = useQuery({ query: query });
 
   useEffect(() => {
-    if (result && result.fetching === false && result.data?.organization) {
-      const repositoryData = result.data.organization.repositories;
-      setRepoCount(repositoryData.totalCount);
-      setRepoData(repositoryData.nodes);
+    if (result && result.fetching === false) {
+      if (result.data?.organization) {
+        const repositoryData = result.data.organization.repositories;
+        if (showInputError) setShowInputError(false);
+        setRepoCount(repositoryData.totalCount);
+        setRepoData(repositoryData.nodes);
+      } else if (organizationName) {
+        setRepoData([]);
+        setShowInputError(true);
+      }
     }
   }, [result, organizationName]);
 
@@ -50,10 +57,9 @@ export default function QueryWrapper() {
     setFirst(first + OFFSET);
   };
 
-  console.log(result);
-
   return (
     <div>
+      {showInputError && <Box mb={6}>Could not find an organization</Box>}
       <OrgInputForm setOrganizationName={setOrganizationName} />
       {repoData?.length > 0 && (
         <>
