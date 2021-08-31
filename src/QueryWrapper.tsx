@@ -3,6 +3,7 @@ import { Button, Box } from "@chakra-ui/react";
 import { useQuery } from "urql";
 import ReposTable from "./ReposTable";
 import OrgInputForm from "./OrgInputForm";
+import Filter from "./Filter";
 
 const REPOS_LIMIT = 5;
 const OFFSET = 5;
@@ -10,11 +11,12 @@ const OFFSET = 5;
 export default function QueryWrapper() {
   const [organizationName, setOrganizationName] = useState("");
   const [organizationDescription, setOrganizationDescription] = useState("");
-
   const [repoData, setRepoData] = useState([]);
   const [first, setFirst] = useState(REPOS_LIMIT);
   const [repoCount, setRepoCount] = useState(0);
   const [showInputError, setShowInputError] = useState(false);
+  const [filterValue, setfilterValue] = useState("");
+  const [filteredRepoData, setFilteredRepoData] = useState([]);
 
   const query = `
     query {
@@ -37,13 +39,16 @@ export default function QueryWrapper() {
   useEffect(() => {
     if (result && result.fetching === false) {
       if (result.data?.organization) {
+        if (showInputError) setShowInputError(false);
         setOrganizationDescription(result.data.organization.name);
         const repositoryData = result.data.organization.repositories;
-        if (showInputError) setShowInputError(false);
+
         setRepoCount(repositoryData.totalCount);
         setRepoData(repositoryData.nodes);
+        setFilteredRepoData(repositoryData.nodes);
       } else if (organizationName) {
         setRepoData([]);
+        setFilteredRepoData([]);
         setShowInputError(true);
       }
     }
@@ -60,14 +65,23 @@ export default function QueryWrapper() {
     setFirst(first + OFFSET);
   };
 
+  // Filtering repository array by the value of filterValue
+  useEffect(() => {
+    const tempRepoData = repoData.filter((repo) =>
+      JSON.stringify(repo).includes(filterValue)
+    );
+    setFilteredRepoData(tempRepoData);
+  }, [filterValue]);
+
   return (
     <div>
       {showInputError && <Box mb={6}>Could not find an organization</Box>}
       <OrgInputForm setOrganizationName={setOrganizationName} />
       {repoData?.length > 0 && (
         <>
+          <Filter filterValue={filterValue} setfilterValue={setfilterValue} />
           <ReposTable
-            tableData={repoData}
+            tableData={filteredRepoData}
             organizationName={organizationName}
             organizationDescription={organizationDescription}
           />
